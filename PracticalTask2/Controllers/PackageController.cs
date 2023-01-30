@@ -1,33 +1,62 @@
 using Microsoft.AspNetCore.Mvc;
+using PracticalTask2.Entities;
+using PracticalTask2.Services;
 
 namespace PracticalTask2.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
+    [Route("[controller]/[action]")]
     public class PackageController : ControllerBase
     {
-        private static readonly string[] Summaries = new[]
-        {
-        "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-    };
+        private readonly IPackageService _packageService;
 
-        private readonly ILogger<PackageController> _logger;
-
-        public PackageController(ILogger<PackageController> logger)
+        public PackageController(IPackageService packageService)
         {
-            _logger = logger;
+            _packageService = packageService;
         }
 
-        [HttpGet(Name = "GetWeatherForecast")]
-        public IEnumerable<Package> Get()
+        [HttpGet(Name = nameof(GetAllPackages))]
+        public List<Package> GetAllPackages()
         {
-            return Enumerable.Range(1, 5).Select(index => new Package
-            {
-                Date = DateTime.Now.AddDays(index),
-                TemperatureC = Random.Shared.Next(-20, 55),
-                Summary = Summaries[Random.Shared.Next(Summaries.Length)]
-            })
-            .ToArray();
+            return _packageService.GetPackages();
+        }
+
+        [HttpGet(Name = nameof(GetPackagesWithStatusDelivered))]
+        public List<Package> GetPackagesWithStatusDelivered(string status = "DELIVERED")
+        {
+            return _packageService.GetPackagesWithStatus(status);
+        }
+
+        [HttpGet(Name = nameof(GetPackagesForRecipient))]
+        public List<Package> GetPackagesForRecipient(int recipientId)
+        {
+            return _packageService.GetPackagesForRecipient(recipientId);
+        }
+
+        [HttpGet(Name = nameof(GetPackage))]
+        public Package? GetPackage(int packageId)
+        {
+            return _packageService.GetPackage(packageId);
+        }
+
+        [HttpPost(Name = nameof(AddPackage))]
+        public void AddPackage(Package package)
+        {
+            _packageService.AddPackage(package);
+        }
+
+        [HttpPost(Name = nameof(UpdatePackage))]
+        public void UpdatePackage(Package package)
+        {
+            _packageService.UpdatePackage(package);
+        }
+
+        [HttpGet(Name = nameof(GetPackageBarcode))]
+        public IActionResult GetPackageBarcode(int packageId)
+        {
+            var barcode = _packageService.GetPackageBarcode(packageId);
+            
+            return barcode == null ? NoContent() : File(barcode, "image/jpeg");
         }
     }
 }

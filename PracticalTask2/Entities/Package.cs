@@ -1,7 +1,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace PracticalTask2
+namespace PracticalTask2.Entities
 {
     public class Package
     {
@@ -20,7 +20,7 @@ namespace PracticalTask2
         public int RecipientId { get; set; }
 
         public DateTime LastUpdated { get; set; }
-        
+
         [ForeignKey("RecipientId")]
         public Recipient Recipient { get; set; }
 

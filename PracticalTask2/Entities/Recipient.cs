@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace PracticalTask2
+namespace PracticalTask2.Entities
 {
     public class Recipient
     {
