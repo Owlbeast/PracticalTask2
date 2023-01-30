@@ -9,8 +9,6 @@ namespace PracticalTask2.Controllers
     public class RecipientController : ControllerBase
     {
         private readonly IRecipientService _recipientService;
-//- add new recipient
-//- edit recipient
 
         public RecipientController(IRecipientService recipientService)
         {

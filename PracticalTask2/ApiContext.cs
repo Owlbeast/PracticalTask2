@@ -7,7 +7,7 @@ namespace PracticalTask2
     {
         protected override void OnConfiguring (DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseInMemoryDatabase(databaseName: "TestDatabase");
+            optionsBuilder.UseInMemoryDatabase(databaseName: "Qwe");
         }
 
         public DbSet<Package> Packages { get; set; }

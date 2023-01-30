@@ -33,12 +33,20 @@ namespace PracticalTask2.Services
 
         public void AddRecipient(Recipient recipient)
         {
-            throw new NotImplementedException();
+            using (var context = new ApiContext())
+            {
+                context.Recipients.Add(recipient);
+                context.SaveChanges();
+            }
         }
 
         public void UpdateRecipient(Recipient recipient)
         {
-            throw new NotImplementedException();
+            using (var context = new ApiContext())
+            {
+                context.Recipients.Update(recipient);
+                context.SaveChanges();
+            }
         }
     }
 }
