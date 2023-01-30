@@ -40,23 +40,45 @@ namespace PracticalTask2.Controllers
         }
 
         [HttpPost(Name = nameof(AddPackage))]
-        public void AddPackage(Package package)
+        public IActionResult AddPackage(Package package)
         {
-            _packageService.AddPackage(package);
+            try
+            {
+                _packageService.AddPackage(package);
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
         [HttpPost(Name = nameof(UpdatePackage))]
-        public void UpdatePackage(Package package)
+        public IActionResult UpdatePackage(Package package)
         {
-            _packageService.UpdatePackage(package);
+            try
+            {
+                _packageService.UpdatePackage(package);
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
         [HttpGet(Name = nameof(GetPackageBarcode))]
         public IActionResult GetPackageBarcode(int packageId)
         {
-            var barcode = _packageService.GetPackageBarcode(packageId);
-            
-            return barcode == null ? NoContent() : File(barcode, "image/jpeg");
+            try
+            {
+                var barcode = _packageService.GetPackageBarcode(packageId);
+                return barcode == null ? NoContent() : File(barcode, "image/jpeg");
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
     }
 }

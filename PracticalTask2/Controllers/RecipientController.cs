@@ -16,15 +16,37 @@ namespace PracticalTask2.Controllers
         }
 
         [HttpPost(Name = nameof(AddRecipient))]
-        public void AddRecipient(Recipient recipient)
+        public IActionResult AddRecipient(Recipient recipient)
         {
-            _recipientService.AddRecipient(recipient);
+            try
+            {
+                _recipientService.AddRecipient(recipient);
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
         [HttpPost(Name = nameof(UpdateRecipient))]
-        public void UpdateRecipient(Recipient recipient)
+        public IActionResult UpdateRecipient(Recipient recipient)
         {
-            _recipientService.UpdateRecipient(recipient);
+            try 
+            { 
+                _recipientService.UpdateRecipient(recipient);
+                return Ok();
+            } 
+            catch(Exception ex)
+            { 
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpGet(Name = nameof(GetRecipients))]
+        public List<Recipient> GetRecipients()
+        {
+            return _recipientService.GetRecipients();
         }
 
     }

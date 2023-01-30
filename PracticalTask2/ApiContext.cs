@@ -7,7 +7,10 @@ namespace PracticalTask2
     {
         protected override void OnConfiguring (DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseInMemoryDatabase(databaseName: "Qwe");
+            var configuration = new ConfigurationBuilder().AddJsonFile("appsettings.json");
+            var config = configuration.Build();
+
+            optionsBuilder.UseInMemoryDatabase(config.GetSection("DatabaseName").Value);
         }
 
         public DbSet<Package> Packages { get; set; }

@@ -5,7 +5,7 @@ namespace PracticalTask2.Entities
 {
     public class Package
     {
-        [Key]
+        [Required, Key]
         public int Id { get; set; }
 
         public string PackageIdentifier { get; set; }
@@ -22,7 +22,7 @@ namespace PracticalTask2.Entities
         public DateTime LastUpdated { get; set; }
 
         [ForeignKey("RecipientId")]
-        public Recipient Recipient { get; set; }
+        public Recipient? Recipient { get; set; }
 
     }
 }

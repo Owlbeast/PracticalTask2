@@ -7,5 +7,7 @@ namespace PracticalTask2.Services
         public void AddRecipient(Recipient recipient);
 
         public void UpdateRecipient(Recipient recipient);
+
+        public List<Recipient> GetRecipients();
     }
 }

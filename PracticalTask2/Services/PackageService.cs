@@ -1,37 +1,11 @@
 ﻿using BarcodeLib;
+using Microsoft.EntityFrameworkCore;
 using PracticalTask2.Entities;
 
 namespace PracticalTask2.Services
 {
     public class PackageService : IPackageService
     {
-        public PackageService()
-        {
-            //using (var context = new ApiContext())
-            //{
-            //    var recipients = new List<Recipient>
-            //    {
-            //        new Recipient
-            //        {
-            //            Id = 1,
-            //            Name = "John Doe",
-            //            Address = "Something st. 1",
-            //            Packages= new List<Package>
-            //            {
-            //                new Package { Name = "Test 1", Description = "Qwe qwe", LastUpdated = DateTime.Now,
-            //                    Status = "DELIVERED", PackageIdentifier = "What is it", RecipientId = 1},
-            //                new Package { Name = "Test 2", Description = "Asd asd", LastUpdated = DateTime.Parse("2022-11-12"),
-            //                    Status = "RECEIVED", PackageIdentifier = "something", RecipientId = 1},
-            //                new Package { Name = "Test 3", Description = "Zxc Zxc", LastUpdated = DateTime.Now.AddDays(10),
-            //                    Status = "DELIVERED", PackageIdentifier = "identifier", RecipientId = 1}
-            //            }
-            //        }
-            //    };
-            //    context.Recipients.AddRange(recipients);
-            //    context.SaveChanges();
-            //}
-        }
-
         public List<Package> GetPackages()
         {
             using (var context = new ApiContext())
@@ -67,15 +41,22 @@ namespace PracticalTask2.Services
         public void AddPackage(Package package)
         {
             package.Status = "RECEIVED";
+            package.Id = 0;
 
-            using (var context = new ApiContext())
-            {
-                context.Packages.Add(package);
-                context.SaveChanges();
-            }
+            AddUpdatePackage(package);
         }
 
         public void UpdatePackage(Package package)
+        {
+            if (package.Id == 0)
+            {
+                throw new DbUpdateConcurrencyException();
+            }
+
+            AddUpdatePackage(package);
+        }
+
+        private void AddUpdatePackage(Package package)
         {
             using (var context = new ApiContext())
             {
@@ -92,7 +73,7 @@ namespace PracticalTask2.Services
                 return null;
             
             var barcodeGenerator = new Barcode();
-            barcodeGenerator.Encode(TYPE.CODE39, packageIdentifier);
+            barcodeGenerator.Encode(TYPE.CODE39Extended, packageIdentifier);
             return barcodeGenerator.GetImageData(SaveTypes.JPG);
         }
 
