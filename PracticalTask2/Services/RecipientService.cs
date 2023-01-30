@@ -34,7 +34,7 @@ namespace PracticalTask2.Services
         {
             using (var context = new ApiContext())
             {
-                return context.Recipients.Include(a => a.Packages).ToList();
+                return context.Recipients.ToList();
             }
         }
     }
